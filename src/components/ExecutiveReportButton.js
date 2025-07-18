@@ -1866,6 +1866,50 @@ const ExecutiveReportDocument = ({
             </Page>
           </>
         )}
+<Page size="A4" style={styles.page}>
+  <View style={styles.pageHeader}>
+    <View style={styles.pageHeaderContent}>
+      <Text style={styles.pageTitle}>Disclaimer</Text>
+      <Text style={styles.pageSubtitle}>
+        Important legal information about this report
+      </Text>
+    </View>
+    {brandingSettings?.logo && (
+      <Image style={styles.headerLogo} src={brandingSettings.logo} cache={false} />
+    )}
+  </View>
+
+  <View style={styles.section}>
+    <Text style={[styles.bodyText, { fontSize: 8, lineHeight: 1.6 }]}>
+      This report is auto generated and provided for informational and advisory purposes only. It reflects the current configuration
+      and security posture of your Microsoft 365 environment as assessed at the time of generation. While 
+      Smart Technology Centre (Pty) Ltd ("STC") has taken reasonable steps to ensure the accuracy of the information presented, 
+      no warranties or guarantees are made regarding its completeness or fitness for any particular purpose. The customer 
+      remains solely responsible for reviewing the report, validating its contents, and implementing any recommended actions 
+      or security measures. STC accepts no liability for any loss, damage, or disruption arising from reliance on this report, 
+      including but not limited to errors, omissions, or misconfigurations. This report must be read in conjunction with 
+      STC's Standard Terms and Conditions, particularly clauses relating to Service Delivery and Availability (Clause 11), 
+      Indemnity and Limitation of Liability (Clause 26), and Warranties (Clause 27). By using this report, you acknowledge 
+      and accept these terms.
+    </Text>
+  </View>
+
+  <View style={[styles.section, { marginTop: 20 }]}>
+    <Text style={[styles.bodyText, { fontSize: 7, color: "#718096" }]}>
+      Report generated on: {currentDate}
+    </Text>
+    <Text style={[styles.bodyText, { fontSize: 7, color: "#718096" }]}>
+      For: {tenantName || "Your Organization"}
+    </Text>
+  </View>
+
+  <View style={styles.footer}>
+    <Text
+      style={styles.pageNumber}
+      render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`}
+    />
+  </View>
+</Page>
     </Document>
   );
 };
