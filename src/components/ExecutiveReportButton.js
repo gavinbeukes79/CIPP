@@ -755,7 +755,7 @@ const ExecutiveReportDocument = ({
           <Text style={styles.coverLabel}>SECURITY ASSESSMENT</Text>
 
           <Text style={styles.mainTitle}>
-            Executive{"\n"}
+            Office 365 Executive{"\n"}
             <Text style={styles.titleAccent}>Summary</Text>
           </Text>
 
@@ -1616,300 +1616,289 @@ const ExecutiveReportDocument = ({
       {conditionalAccessData &&
         Array.isArray(conditionalAccessData) &&
         conditionalAccessData.length > 0 && (
-          <>
-            {/* STATISTIC PAGE 5 - CHAPTER SPLITTER */}
-            <Page size="A4" style={styles.statPage}>
-              <Image style={styles.statBackground} src="/reportImages/city.jpg" />
-              <View style={styles.statOverlay}>
-                <Text style={styles.statHighlight}>277</Text>
-                <Text style={styles.statMainText}>days</Text>
-                <Text style={styles.statSubText}>
-                  average time to identify and{"\n"}
-                  contain a <Text style={{ fontWeight: "bold" }}>data breach</Text>
-                </Text>
-              </View>
-              <Text style={styles.statFooterText}>
-                <Text style={{ fontWeight: "bold" }}>Early detection</Text> minimizes{"\n"}
-                <Text style={{ fontWeight: "bold" }}>business impact</Text>
+          <><>
+          {/* STATISTIC PAGE 5 - CHAPTER SPLITTER */}
+          <Page size="A4" style={styles.statPage}>
+            <Image style={styles.statBackground} src="/reportImages/city.jpg" />
+            <View style={styles.statOverlay}>
+              <Text style={styles.statHighlight}>277</Text>
+              <Text style={styles.statMainText}>days</Text>
+              <Text style={styles.statSubText}>
+                average time to identify and{"\n"}
+                contain a <Text style={{ fontWeight: "bold" }}>data breach</Text>
               </Text>
-            </Page>
-            <Page size="A4" style={styles.page}>
-              <View style={styles.pageHeader}>
-                <View style={styles.pageHeaderContent}>
-                  <Text style={styles.pageTitle}>Conditional Access Policies</Text>
-                  <Text style={styles.pageSubtitle}>
-                    Identity and access management security controls
-                  </Text>
+            </View>
+            <Text style={styles.statFooterText}>
+              <Text style={{ fontWeight: "bold" }}>Early detection</Text> minimizes{"\n"}
+              <Text style={{ fontWeight: "bold" }}>business impact</Text>
+            </Text>
+          </Page>
+          <Page size="A4" style={styles.page}>
+            <View style={styles.pageHeader}>
+              <View style={styles.pageHeaderContent}>
+                <Text style={styles.pageTitle}>Conditional Access Policies</Text>
+                <Text style={styles.pageSubtitle}>
+                  Identity and access management security controls
+                </Text>
+              </View>
+              {brandingSettings?.logo && (
+                <Image style={styles.headerLogo} src={brandingSettings.logo} cache={false} />
+              )}
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.bodyText}>
+                Access control policies help protect your business by ensuring only the right
+                people can access sensitive information under appropriate circumstances. These
+                smart security measures automatically evaluate each access request and apply
+                additional verification when needed, balancing security with employee
+                productivity.
+              </Text>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>How Access Controls Protect Your Business</Text>
+              <Text style={styles.bodyText}>
+                These policies work like intelligent security guards, making decisions based on
+                who is trying to access what, from where, and when. For example, accessing email
+                from the office might be seamless, but accessing it from an unusual location might
+                require additional verification. This approach protects your data while minimizing
+                disruption to daily work.
+              </Text>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Current Policy Configuration</Text>
+
+              <View style={styles.controlsTable}>
+                <View style={styles.tableHeader}>
+                  <Text style={[styles.headerCell, { width: 140 }]}>Policy Name</Text>
+                  <Text style={[styles.headerCell, { width: 80 }]}>State</Text>
+                  <Text style={[styles.headerCell, { width: 80 }]}>Applications</Text>
+                  <Text style={[styles.headerCell, { flex: 1 }]}>Controls</Text>
                 </View>
-                {brandingSettings?.logo && (
-                  <Image style={styles.headerLogo} src={brandingSettings.logo} cache={false} />
-                )}
-              </View>
 
-              <View style={styles.section}>
-                <Text style={styles.bodyText}>
-                  Access control policies help protect your business by ensuring only the right
-                  people can access sensitive information under appropriate circumstances. These
-                  smart security measures automatically evaluate each access request and apply
-                  additional verification when needed, balancing security with employee
-                  productivity.
-                </Text>
-              </View>
+                {conditionalAccessData.slice(0, 8).map((policy, index) => {
+                  const getStateStyle = (state) => {
+                    switch (state) {
+                      case "enabled":
+                        return styles.statusCompliant;
+                      case "enabledForReportingButNotEnforced":
+                        return styles.statusPartial;
+                      case "disabled":
+                        return styles.statusReview;
+                      default:
+                        return styles.statusText;
+                    }
+                  };
 
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>How Access Controls Protect Your Business</Text>
-                <Text style={styles.bodyText}>
-                  These policies work like intelligent security guards, making decisions based on
-                  who is trying to access what, from where, and when. For example, accessing email
-                  from the office might be seamless, but accessing it from an unusual location might
-                  require additional verification. This approach protects your data while minimizing
-                  disruption to daily work.
-                </Text>
-              </View>
+                  const getStateDisplay = (state) => {
+                    switch (state) {
+                      case "enabled":
+                        return "Enabled";
+                      case "enabledForReportingButNotEnforced":
+                        return "Report Only";
+                      case "disabled":
+                        return "Disabled";
+                      default:
+                        return state || "Unknown";
+                    }
+                  };
 
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Current Policy Configuration</Text>
+                  const getControlsText = (policy) => {
+                    const controls = [];
+                    if (policy.builtInControls) {
+                      if (policy.builtInControls.includes("mfa")) controls.push("MFA");
+                      if (policy.builtInControls.includes("block")) controls.push("Block");
+                      if (policy.builtInControls.includes("compliantDevice"))
+                        controls.push("Compliant Device");
+                    }
+                    return controls.length > 0 ? controls.join(", ") : "Custom";
+                  };
 
-                <View style={styles.controlsTable}>
-                  <View style={styles.tableHeader}>
-                    <Text style={[styles.headerCell, { width: 140 }]}>Policy Name</Text>
-                    <Text style={[styles.headerCell, { width: 80 }]}>State</Text>
-                    <Text style={[styles.headerCell, { width: 80 }]}>Applications</Text>
-                    <Text style={[styles.headerCell, { flex: 1 }]}>Controls</Text>
-                  </View>
-
-                  {conditionalAccessData.slice(0, 8).map((policy, index) => {
-                    const getStateStyle = (state) => {
-                      switch (state) {
-                        case "enabled":
-                          return styles.statusCompliant;
-                        case "enabledForReportingButNotEnforced":
-                          return styles.statusPartial;
-                        case "disabled":
-                          return styles.statusReview;
-                        default:
-                          return styles.statusText;
-                      }
-                    };
-
-                    const getStateDisplay = (state) => {
-                      switch (state) {
-                        case "enabled":
-                          return "Enabled";
-                        case "enabledForReportingButNotEnforced":
-                          return "Report Only";
-                        case "disabled":
-                          return "Disabled";
-                        default:
-                          return state || "Unknown";
-                      }
-                    };
-
-                    const getControlsText = (policy) => {
-                      const controls = [];
-                      if (policy.builtInControls) {
-                        if (policy.builtInControls.includes("mfa")) controls.push("MFA");
-                        if (policy.builtInControls.includes("block")) controls.push("Block");
-                        if (policy.builtInControls.includes("compliantDevice"))
-                          controls.push("Compliant Device");
-                      }
-                      return controls.length > 0 ? controls.join(", ") : "Custom";
-                    };
-
-                    return (
-                      <View key={index} style={styles.tableRow}>
-                        <Text style={[styles.cellName, { width: 140, fontSize: 7, marginLeft: 0 }]}>
-                          {(() => {
-                            const displayName = policy.displayName || "N/A";
-                            if (typeof displayName === "object") {
-                              console.log(
-                                "DEBUG: policy.displayName is an object:",
-                                displayName,
-                                "full policy:",
-                                policy
-                              );
-                            }
-                            return displayName;
-                          })()}
-                        </Text>
-                        <View style={[styles.cellStatus, { width: 80, marginLeft: 0 }]}>
-                          <Text style={[styles.statusText, getStateStyle(policy.state)]}>
-                            {getStateDisplay(policy.state)}
-                          </Text>
-                        </View>
-                        <Text style={[styles.cellName, { width: 80, fontSize: 7 }]}>
-                          {(() => {
-                            const includeApplications = policy.includeApplications || "All";
-                            if (typeof includeApplications === "object") {
-                              console.log(
-                                "DEBUG: policy.includeApplications is an object:",
-                                includeApplications,
-                                "full policy:",
-                                policy
-                              );
-                            }
-                            return includeApplications;
-                          })()}
-                        </Text>
-                        <Text style={[styles.cellName, { flex: 1, fontSize: 7 }]}>
-                          {getControlsText(policy)}
+                  return (
+                    <View key={index} style={styles.tableRow}>
+                      <Text style={[styles.cellName, { width: 140, fontSize: 7, marginLeft: 0 }]}>
+                        {(() => {
+                          const displayName = policy.displayName || "N/A";
+                          if (typeof displayName === "object") {
+                            console.log(
+                              "DEBUG: policy.displayName is an object:",
+                              displayName,
+                              "full policy:",
+                              policy
+                            );
+                          }
+                          return displayName;
+                        })()}
+                      </Text>
+                      <View style={[styles.cellStatus, { width: 80, marginLeft: 0 }]}>
+                        <Text style={[styles.statusText, getStateStyle(policy.state)]}>
+                          {getStateDisplay(policy.state)}
                         </Text>
                       </View>
-                    );
-                  })}
+                      <Text style={[styles.cellName, { width: 80, fontSize: 7 }]}>
+                        {(() => {
+                          const includeApplications = policy.includeApplications || "All";
+                          if (typeof includeApplications === "object") {
+                            console.log(
+                              "DEBUG: policy.includeApplications is an object:",
+                              includeApplications,
+                              "full policy:",
+                              policy
+                            );
+                          }
+                          return includeApplications;
+                        })()}
+                      </Text>
+                      <Text style={[styles.cellName, { flex: 1, fontSize: 7 }]}>
+                        {getControlsText(policy)}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Policy Overview</Text>
+
+              <View style={styles.statsGrid}>
+                <View style={styles.statCard}>
+                  <Text style={styles.statNumber}>{conditionalAccessData.length}</Text>
+                  <Text style={styles.statLabel}>Total Policies</Text>
+                </View>
+                <View style={styles.statCard}>
+                  <Text style={styles.statNumber}>
+                    {conditionalAccessData.filter((policy) => policy.state === "enabled").length}
+                  </Text>
+                  <Text style={styles.statLabel}>Enabled</Text>
+                </View>
+                <View style={styles.statCard}>
+                  <Text style={styles.statNumber}>
+                    {conditionalAccessData.filter(
+                      (policy) => policy.state === "enabledForReportingButNotEnforced"
+                    ).length}
+                  </Text>
+                  <Text style={styles.statLabel}>Report Only</Text>
+                </View>
+                <View style={styles.statCard}>
+                  <Text style={styles.statNumber}>
+                    {conditionalAccessData.filter(
+                      (policy) => policy.builtInControls && policy.builtInControls.includes("mfa")
+                    ).length}
+                  </Text>
+                  <Text style={styles.statLabel}>MFA Policies</Text>
                 </View>
               </View>
+            </View>
 
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Policy Overview</Text>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Policy Analysis</Text>
 
-                <View style={styles.statsGrid}>
-                  <View style={styles.statCard}>
-                    <Text style={styles.statNumber}>{conditionalAccessData.length}</Text>
-                    <Text style={styles.statLabel}>Total Policies</Text>
-                  </View>
-                  <View style={styles.statCard}>
-                    <Text style={styles.statNumber}>
-                      {conditionalAccessData.filter((policy) => policy.state === "enabled").length}
-                    </Text>
-                    <Text style={styles.statLabel}>Enabled</Text>
-                  </View>
-                  <View style={styles.statCard}>
-                    <Text style={styles.statNumber}>
-                      {
-                        conditionalAccessData.filter(
-                          (policy) => policy.state === "enabledForReportingButNotEnforced"
-                        ).length
-                      }
-                    </Text>
-                    <Text style={styles.statLabel}>Report Only</Text>
-                  </View>
-                  <View style={styles.statCard}>
-                    <Text style={styles.statNumber}>
-                      {
-                        conditionalAccessData.filter(
-                          (policy) =>
-                            policy.builtInControls && policy.builtInControls.includes("mfa")
-                        ).length
-                      }
-                    </Text>
-                    <Text style={styles.statLabel}>MFA Policies</Text>
-                  </View>
+              <View style={styles.recommendationsList}>
+                <View style={styles.recommendationItem}>
+                  <Text style={styles.recommendationBullet}>•</Text>
+                  <Text style={styles.recommendationText}>
+                    <Text style={styles.recommendationLabel}>Policy Coverage:</Text>{" "}
+                    {conditionalAccessData.length} conditional access policies configured
+                  </Text>
+                </View>
+                <View style={styles.recommendationItem}>
+                  <Text style={styles.recommendationBullet}>•</Text>
+                  <Text style={styles.recommendationText}>
+                    <Text style={styles.recommendationLabel}>Enforcement Status:</Text>{" "}
+                    {conditionalAccessData.filter((policy) => policy.state === "enabled").length}{" "}
+                    policies actively enforced
+                  </Text>
+                </View>
+                <View style={styles.recommendationItem}>
+                  <Text style={styles.recommendationBullet}>•</Text>
+                  <Text style={styles.recommendationText}>
+                    <Text style={styles.recommendationLabel}>Testing Phase:</Text>{" "}
+                    {conditionalAccessData.filter(
+                      (policy) => policy.state === "enabledForReportingButNotEnforced"
+                    ).length}{" "}
+                    policies in report-only mode
+                  </Text>
+                </View>
+                <View style={styles.recommendationItem}>
+                  <Text style={styles.recommendationBullet}>•</Text>
+                  <Text style={styles.recommendationText}>
+                    <Text style={styles.recommendationLabel}>Security Controls:</Text>{" "}
+                    Multi-factor authentication and access blocking implemented
+                  </Text>
                 </View>
               </View>
+            </View>
 
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Policy Analysis</Text>
-
-                <View style={styles.recommendationsList}>
-                  <View style={styles.recommendationItem}>
-                    <Text style={styles.recommendationBullet}>•</Text>
-                    <Text style={styles.recommendationText}>
-                      <Text style={styles.recommendationLabel}>Policy Coverage:</Text>{" "}
-                      {conditionalAccessData.length} conditional access policies configured
-                    </Text>
-                  </View>
-                  <View style={styles.recommendationItem}>
-                    <Text style={styles.recommendationBullet}>•</Text>
-                    <Text style={styles.recommendationText}>
-                      <Text style={styles.recommendationLabel}>Enforcement Status:</Text>{" "}
-                      {conditionalAccessData.filter((policy) => policy.state === "enabled").length}{" "}
-                      policies actively enforced
-                    </Text>
-                  </View>
-                  <View style={styles.recommendationItem}>
-                    <Text style={styles.recommendationBullet}>•</Text>
-                    <Text style={styles.recommendationText}>
-                      <Text style={styles.recommendationLabel}>Testing Phase:</Text>{" "}
-                      {
-                        conditionalAccessData.filter(
-                          (policy) => policy.state === "enabledForReportingButNotEnforced"
-                        ).length
-                      }{" "}
-                      policies in report-only mode
-                    </Text>
-                  </View>
-                  <View style={styles.recommendationItem}>
-                    <Text style={styles.recommendationBullet}>•</Text>
-                    <Text style={styles.recommendationText}>
-                      <Text style={styles.recommendationLabel}>Security Controls:</Text>{" "}
-                      Multi-factor authentication and access blocking implemented
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.infoBox}>
-                <Text style={styles.infoTitle}>Access Control Recommendations</Text>
-                <Text style={styles.infoText}>
-                  {conditionalAccessData.filter(
+            <View style={styles.infoBox}>
+              <Text style={styles.infoTitle}>Access Control Recommendations</Text>
+              <Text style={styles.infoText}>
+                {conditionalAccessData.filter(
+                  (policy) => policy.state === "enabledForReportingButNotEnforced"
+                ).length > 0
+                  ? `Consider activating ${conditionalAccessData.filter(
                     (policy) => policy.state === "enabledForReportingButNotEnforced"
-                  ).length > 0
-                    ? `Consider activating ${
-                        conditionalAccessData.filter(
-                          (policy) => policy.state === "enabledForReportingButNotEnforced"
-                        ).length
-                      } policies currently in testing mode after ensuring they don't disrupt business operations. `
-                    : "Your access controls are properly configured. "}
-                  Regularly review how these policies affect employee productivity and adjust as
-                  needed. Consider additional location-based protections for enhanced security
-                  without impacting daily operations.
+                  ).length} policies currently in testing mode after ensuring they don't disrupt business operations. `
+                  : "Your access controls are properly configured. "}
+                Regularly review how these policies affect employee productivity and adjust as
+                needed. Consider additional location-based protections for enhanced security
+                without impacting daily operations.
+              </Text>
+            </View>
+
+            <View style={styles.footer}>
+              <Text
+                style={styles.pageNumber}
+                render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} />
+            </View>
+          </Page>
+        </><Page size="A4" style={styles.page}>
+            <View style={styles.pageHeader}>
+              <View style={styles.pageHeaderContent}>
+                <Text style={styles.pageTitle}>Disclaimer</Text>
+                <Text style={styles.pageSubtitle}>
+                  Important legal information about this report
                 </Text>
               </View>
+              {brandingSettings?.logo && (
+                <Image style={styles.headerLogo} src={brandingSettings.logo} cache={false} />
+              )}
+            </View>
 
-              <View style={styles.footer}>
-                <Text
-                  style={styles.pageNumber}
-                  render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`}
-                />
-              </View>
-            </Page>
-          </>
+            <View style={styles.section}>
+              <Text style={[styles.bodyText, { fontSize: 8, lineHeight: 1.6 }]}>
+                This report is auto generated and provided for informational and advisory purposes only. It reflects the current configuration
+                and security posture of your Microsoft 365 environment as assessed at the time of generation. While
+                Smart Technology Centre (Pty) Ltd ("STC") has taken reasonable steps to ensure the accuracy of the information presented,
+                no warranties or guarantees are made regarding its completeness or fitness for any particular purpose. The customer
+                remains solely responsible for reviewing the report, validating its contents, and implementing any recommended actions
+                or security measures. STC accepts no liability for any loss, damage, or disruption arising from reliance on this report,
+                including but not limited to errors, omissions, or misconfigurations. This report must be read in conjunction with
+                STC's Standard Terms and Conditions, particularly clauses relating to Service Delivery and Availability (Clause 11),
+                Indemnity and Limitation of Liability (Clause 26), and Warranties (Clause 27). By using this report, you acknowledge
+                and accept these terms.
+              </Text>
+            </View>
+
+            <View style={[styles.section, { marginTop: 20 }]}>
+              <Text style={[styles.bodyText, { fontSize: 7, color: "#718096" }]}>
+                Report generated on: {currentDate}
+              </Text>
+              <Text style={[styles.bodyText, { fontSize: 7, color: "#718096" }]}>
+                For: {tenantName || "Your Organization"}
+              </Text>
+            </View>
+
+            <View style={styles.footer}>
+              <Text
+                style={styles.pageNumber}
+                render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} />
+            </View>
+          </Page></>
         )}
-<Page size="A4" style={styles.page}>
-  <View style={styles.pageHeader}>
-    <View style={styles.pageHeaderContent}>
-      <Text style={styles.pageTitle}>Disclaimer</Text>
-      <Text style={styles.pageSubtitle}>
-        Important legal information about this report
-      </Text>
-    </View>
-    {brandingSettings?.logo && (
-      <Image style={styles.headerLogo} src={brandingSettings.logo} cache={false} />
-    )}
-  </View>
-
-  <View style={styles.section}>
-    <Text style={[styles.bodyText, { fontSize: 8, lineHeight: 1.6 }]}>
-      This report is auto generated and provided for informational and advisory purposes only. It reflects the current configuration
-      and security posture of your Microsoft 365 environment as assessed at the time of generation. While 
-      Smart Technology Centre (Pty) Ltd ("STC") has taken reasonable steps to ensure the accuracy of the information presented, 
-      no warranties or guarantees are made regarding its completeness or fitness for any particular purpose. The customer 
-      remains solely responsible for reviewing the report, validating its contents, and implementing any recommended actions 
-      or security measures. STC accepts no liability for any loss, damage, or disruption arising from reliance on this report, 
-      including but not limited to errors, omissions, or misconfigurations. This report must be read in conjunction with 
-      STC's Standard Terms and Conditions, particularly clauses relating to Service Delivery and Availability (Clause 11), 
-      Indemnity and Limitation of Liability (Clause 26), and Warranties (Clause 27). By using this report, you acknowledge 
-      and accept these terms.
-    </Text>
-  </View>
-
-  <View style={[styles.section, { marginTop: 20 }]}>
-    <Text style={[styles.bodyText, { fontSize: 7, color: "#718096" }]}>
-      Report generated on: {currentDate}
-    </Text>
-    <Text style={[styles.bodyText, { fontSize: 7, color: "#718096" }]}>
-      For: {tenantName || "Your Organization"}
-    </Text>
-  </View>
-
-  <View style={styles.footer}>
-    <Text
-      style={styles.pageNumber}
-      render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`}
-    />
-  </View>
-</Page>
+        
     </Document>
   );
 };
