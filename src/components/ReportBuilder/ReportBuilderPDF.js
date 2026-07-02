@@ -134,7 +134,7 @@ const createStyles = (brandColor) =>
     pageSubtitle: { 
       fontSize: 11, 
       color: '#4A5568', 
-      fontWeight: 'normal'
+      fontWeight: 'normal',
       width: '100%',
     },
     headerLogo: { height: 30 },
