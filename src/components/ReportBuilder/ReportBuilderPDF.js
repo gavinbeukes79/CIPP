@@ -117,22 +117,26 @@ const createStyles = (brandColor) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
+      width: '100%',
     },
     pageHeaderDivider: {
       height: 1,
       backgroundColor: brandColor,
       marginBottom: 24,
     },
-    pageHeaderContent: { flex: 1 },
-    pageTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: '#1A202C',
-      marginBottom: 8,
-      paddingTop: 4,
-      paddingBottom: 4,
+    pageHeaderContent: {
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 0,
+      paddingRight: 16,
+      minWidth: 0,
     },
-    pageSubtitle: { fontSize: 11, color: '#4A5568', fontWeight: 'normal' },
+    pageSubtitle: { 
+      fontSize: 11, 
+      color: '#4A5568', 
+      fontWeight: 'normal'
+      width: '100%',
+    },
     headerLogo: { height: 30 },
 
     /* ── Sections ──────────────────────────────────────── */
